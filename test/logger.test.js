@@ -1,12 +1,13 @@
 'use strict';
 
 const mock = require('egg-mock');
+const sleep = require('mz-modules/sleep');
 
-describe('test/logger-sls.test.js', () => {
+describe('test/logger.test.js', () => {
   let app;
   before(() => {
     app = mock.app({
-      baseDir: 'apps/logger-sls-test',
+      baseDir: 'apps/logger',
     });
     return app.ready();
   });
@@ -14,10 +15,12 @@ describe('test/logger-sls.test.js', () => {
   after(() => app.close());
   afterEach(mock.restore);
 
-  it('should GET /', () => {
-    return app.httpRequest()
+  it('should GET /', async () => {
+    await app.httpRequest()
       .get('/')
-      .expect('hi, loggerSLS')
+      .expect('done')
       .expect(200);
+
+    await sleep(2000);
   });
 });
