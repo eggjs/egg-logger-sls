@@ -15,7 +15,7 @@
   ],
   "dependencies": {
     "address": "^1.0.3",
-    "aggregate-base": "^1.0.0",
+    "aggregate-base": "^1.1.0",
     "egg-logger": "^1.7.1"
   },
   "devDependencies": {
@@ -23,19 +23,17 @@
     "autod-egg": "^1.1.0",
     "egg": "^2.10.0",
     "egg-bin": "^4.8.2",
-    "egg-ci": "^1.8.0",
     "egg-mock": "^3.19.6",
     "egg-sls": "^1.0.0-alpha.1",
     "eslint": "^5.4.0",
     "eslint-config-egg": "^7.1.0",
-    "mz-modules": "^2.1.0",
-    "webstorm-disable-index": "^1.2.0"
+    "mz-modules": "^2.1.0"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=8.6.0"
   },
   "scripts": {
-    "test": "npm run lint -- --fix && egg-bin pkgfiles && npm run test-local",
+    "test": "npm run lint && egg-bin pkgfiles && npm run test-local",
     "test-local": "egg-bin test",
     "cov": "egg-bin cov",
     "lint": "eslint .",
@@ -48,9 +46,6 @@
     "app.js",
     "lib"
   ],
-  "ci": {
-    "version": "8, 9"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/eggjs/egg-logger-sls.git"
