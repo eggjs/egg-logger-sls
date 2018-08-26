@@ -15,10 +15,16 @@ exports.sls = {
 exports.loggerSLS = {
   project: 'egg-sls-post-log',
   logstore: 'egg-sls-post-log',
+  disable: [
+    'disabledLogger',
+  ],
 };
 
 exports.customLogger = {
   myLogger: {
     file: path.join(__dirname, '../logs/my.log'),
+  },
+  disabledLogger: {
+    file: path.join(__dirname, '../logs/disabled.log'),
   },
 };

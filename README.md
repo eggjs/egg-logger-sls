@@ -56,6 +56,8 @@ exports.loggerSLS = {
   project: '',
   // sls logstore name
   logstore: '',
+  // the list of logger name that can be disabled
+  disable: [],
 };
 ```
 

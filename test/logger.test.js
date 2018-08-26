@@ -77,6 +77,26 @@ describe('test/logger.test.js', () => {
       assert(result[0].value === 'errorLogger');
     });
 
+
+    it('should not upload when disable', async () => {
+      let logs = [];
+      mock(app.sls, 'postLogstoreLogs', async (g, l, group) => {
+        assert(group.source === hostname);
+        logs = group.logs.concat(logs);
+      });
+      await app.httpRequest()
+        .get('/disable')
+        .expect('done')
+        .expect(200);
+
+      await sleep(2000);
+
+      for (const log of logs) {
+        for (const { value } of log.contents) {
+          assert(value !== 'disabledLogger');
+        }
+      }
+    });
   });
 
   describe('sls clients', () => {
