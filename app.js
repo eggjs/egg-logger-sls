@@ -13,7 +13,7 @@ module.exports = app => {
       client,
       appName: app.config.name,
       loggerName: logger.name,
-      loggerFileName: logger.options.file || '',
+      loggerFileName: logger.options.file,
     });
     logger.set('sls', transport);
   }
