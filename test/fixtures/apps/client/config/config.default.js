@@ -19,7 +19,6 @@ exports.loggerSLS = {
     'disabledLogger',
   ],
   transform(log) {
-    console.log(log.content);
     if (log.content === 'block') return false;
     return log;
   },
