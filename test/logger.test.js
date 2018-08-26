@@ -33,13 +33,28 @@ describe('test/logger.test.js', () => {
 
       await sleep(2000);
 
+      let myLoggerInfo;
+      let defaultLoggerInfo;
+      let errorLoggerInfo;
+
       for (const log of logs) {
         assert(typeof log.time === 'number');
         assert(String(log.time).length === 10);
 
         const keys = [];
-        for (const { key } of log.contents) {
+        for (const { key, value } of log.contents) {
           keys.push(key);
+
+          // check custom logger name
+          if (value === 'my logger') {
+            myLoggerInfo = log;
+          }
+          if (value === 'info') {
+            defaultLoggerInfo = log;
+          }
+          if (value === 'error') {
+            errorLoggerInfo = log;
+          }
         }
         assert.deepEqual(keys, [
           'level',
@@ -51,7 +66,17 @@ describe('test/logger.test.js', () => {
           'loggerFileName',
         ]);
       }
+
+      let result = myLoggerInfo.contents.filter(c => c.key === 'loggerName');
+      assert(result[0].value === 'myLogger');
+
+      result = defaultLoggerInfo.contents.filter(c => c.key === 'loggerName');
+      assert(result[0].value === 'logger');
+
+      result = errorLoggerInfo.contents.filter(c => c.key === 'loggerName');
+      assert(result[0].value === 'errorLogger');
     });
+
   });
 
   describe('sls clients', () => {

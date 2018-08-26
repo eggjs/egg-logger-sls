@@ -1,5 +1,7 @@
 'use strict';
 
+const path = require('path');
+
 exports.keys = '123456';
 
 exports.sls = {
@@ -13,4 +15,10 @@ exports.sls = {
 exports.loggerSLS = {
   project: 'egg-sls-post-log',
   logstore: 'egg-sls-post-log',
+};
+
+exports.customLogger = {
+  myLogger: {
+    file: path.join(__dirname, '../logs/my.log'),
+  },
 };
