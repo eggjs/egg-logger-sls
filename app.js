@@ -14,6 +14,7 @@ module.exports = app => {
       level: 'DEBUG',
       consoleLevel: 'NONE',
       client,
+      env: app.config.env,
       appName: app.config.name,
       loggerName: name,
       loggerFileName: logger.options.file,

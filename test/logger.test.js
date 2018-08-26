@@ -61,6 +61,7 @@ describe('test/logger.test.js', () => {
           'content',
           'ip',
           'hostname',
+          'env',
           'appName',
           'loggerName',
           'loggerFileName',
