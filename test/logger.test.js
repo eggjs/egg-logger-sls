@@ -81,7 +81,6 @@ describe('test/logger.test.js', () => {
       assert(result[0].value === 'errorLogger');
     });
 
-
     it('should not upload when disable', async () => {
       let logs = [];
       mock(app.sls, 'postLogstoreLogs', async (g, l, group) => {
@@ -100,6 +99,29 @@ describe('test/logger.test.js', () => {
           assert(value !== 'disabledLogger');
         }
       }
+    });
+
+    it('should support transform', async () => {
+      let logs = [];
+      mock(app.sls, 'postLogstoreLogs', async (g, l, group) => {
+        assert(group.source === hostname);
+        logs = group.logs.concat(logs);
+      });
+      await app.httpRequest()
+        .get('/transform')
+        .expect('done')
+        .expect(200);
+
+      await sleep(2000);
+
+      const values = [];
+      for (const log of logs) {
+        for (const { key, value } of log.contents) {
+          if (key === 'content' && value === 'pass') values.push(value);
+          assert(value !== 'block');
+        }
+      }
+      assert.deepEqual(values, [ 'pass', 'pass' ]);
     });
   });
 
