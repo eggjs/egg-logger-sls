@@ -55,7 +55,6 @@ describe('test/logger.test.js', () => {
   });
 
   describe('sls clients', () => {
-
     let app;
     before(() => {
       app = mock.app({
@@ -99,4 +98,25 @@ describe('test/logger.test.js', () => {
     });
   });
 
+  it('should check sls client', async () => {
+    try {
+      const app = mock.app({
+        baseDir: 'apps/check-client',
+      });
+      await app.ready();
+      throw new Error('should not run');
+    } catch (err) {
+      assert(err.message === 'app.sls is required');
+    }
+
+    try {
+      const app = mock.app({
+        baseDir: 'apps/check-clients',
+      });
+      await app.ready();
+      throw new Error('should not run');
+    } catch (err) {
+      assert(err.message === 'app.sls.get(\'unknown\') is required');
+    }
+  });
 });
