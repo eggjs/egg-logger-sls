@@ -55,6 +55,9 @@ describe('test/logger.test.js', () => {
           if (value === 'error') {
             errorLoggerInfo = log;
           }
+
+          // level is info, won't upload debug
+          assert(value !== 'debug');
         }
         assert.deepEqual(keys, [
           'level',
