@@ -20,13 +20,12 @@
 [download-image]: https://img.shields.io/npm/dm/egg-logger-sls.svg?style=flat-square
 [download-url]: https://npmjs.org/package/egg-logger-sls
 
-<!--
-Description here.
--->
+Logger transport for aliyun sls.
 
 ## Install
 
 ```bash
+$ npm i egg-sls --save
 $ npm i egg-logger-sls --save
 ```
 
@@ -34,6 +33,10 @@ $ npm i egg-logger-sls --save
 
 ```js
 // {app_root}/config/plugin.js
+exports.sls = {
+  enable: true,
+  package: 'egg-sls',
+};
 exports.loggerSLS = {
   enable: true,
   package: 'egg-logger-sls',
@@ -42,17 +45,55 @@ exports.loggerSLS = {
 
 ## Configuration
 
+You should configure [egg-sls] first.
+
 ```js
 // {app_root}/config/config.default.js
 exports.loggerSLS = {
+  // sls client name
+  client: null,
+  // sls project name
+  project: '',
+  // sls logstore name
+  logstore: '',
+};
+```
+
+If client is not specified, it will use `app.sls` as default client, otherwise it will get the sls client with the specified name in multiple client case.
+
+```js
+// {app_root}/config/config.default.js
+exports.sls = {
+  clients: {
+    sls: {
+      endpoint: process.env.SLS_ENDPOINT,
+      accessKeyId: process.env.SLS_ACCESS_KEY_ID,
+      accessKeySecret: process.env.SLS_ACCESS_KEY_SECRET,
+    },
+  },
+};
+exports.loggerSLS = {
+  client: 'sls',
+  project: '',
+  logstore: '',
 };
 ```
 
 see [config/config.default.js](config/config.default.js) for more detail.
 
-## Example
+## Usage
 
-<!-- example here -->
+The only thing you should do is configuration, this module will upload log automatically.
+
+The data structure uploaded in below, you can create index in aliyun console as your wish.
+
+- level: logger level
+- content: the infomation that you logged
+- ip: the host ip
+- hostname: the host name
+- appName: the package name
+- loggerName: the logger name defined by Egg
+- loggerFileName: the logger file path
 
 ## Questions & Suggestions
 
@@ -61,3 +102,5 @@ Please open an issue [here](https://github.com/eggjs/egg/issues).
 ## License
 
 [MIT](LICENSE)
+
+[egg-sls]: https://github.com/eggjs/egg-sls

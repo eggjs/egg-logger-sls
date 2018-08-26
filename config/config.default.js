@@ -1,16 +1,16 @@
 'use strict';
 
 /**
- * egg-logger-sls default config
+ * default config
  * @member Config#loggerSLS
- * @property {String} client - some description
- * @property {String} project - some description
- * @property {String} logstore - some description
- * @property {Array} disable - some description
+ * @property {String} client - sls client name in egg-sls
+ * @property {String} project - sls project name
+ * @property {String} logstore - sls logstore name
  */
 exports.loggerSLS = {
   client: null,
   project: '',
   logstore: '',
-  disable: [],
+  // TODO: should implement
+  // disable: [],
 };

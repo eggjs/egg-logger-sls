@@ -1,7 +1,7 @@
 {
   "name": "egg-logger-sls",
   "version": "1.0.0",
-  "description": "",
+  "description": "Logger transport for aliyun sls",
   "eggPlugin": {
     "name": "loggerSLS",
     "dependencies": [
