@@ -4,6 +4,7 @@ const Controller = require('egg').Controller;
 
 class HomeController extends Controller {
   async index() {
+    this.ctx.logger.debug('debug');
     this.ctx.logger.info('info');
     this.ctx.logger.warn('warn');
     this.ctx.logger.error('error');
