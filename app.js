@@ -14,6 +14,7 @@ module.exports = app => {
       level: 'INFO',
       consoleLevel: 'NONE',
       client,
+      transform: config.transform,
       env: app.config.env,
       appName: app.config.name,
       loggerName: name,

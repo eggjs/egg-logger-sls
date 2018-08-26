@@ -58,6 +58,8 @@ exports.loggerSLS = {
   logstore: '',
   // the list of logger name that can be disabled
   disable: [],
+  // the function that can modify and filter the logs
+  transform: null,
 };
 ```
 
@@ -86,6 +88,49 @@ see [config/config.default.js](config/config.default.js) for more detail.
 ## Usage
 
 The only thing you should do is configuration, this module will upload log automatically.
+
+### Disable Logger
+
+You and disable logger with `disable` config.
+
+```js
+exports.customLogger = {
+  myLogger: {
+    file: '/path/to/log',
+  },
+};
+exports.loggerSLS = {
+  disable: [
+    // won't upload this logger
+    'myLogger',
+  ],
+}
+```
+
+### Transform and Filter
+
+You can transform the log data before upload.
+
+```js
+exports.loggerSLS = {
+  transform(log) {
+    return log;
+  },
+}
+```
+
+If you want to ignore some log, you can return false when transform.
+
+```js
+exports.loggerSLS = {
+  transform(log) {
+    if (some condition) return false;
+    return log;
+  },
+}
+```
+
+### Data Structure
 
 The data structure uploaded in below, you can create index in aliyun console as your wish.
 
