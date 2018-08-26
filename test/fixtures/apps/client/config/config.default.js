@@ -18,6 +18,11 @@ exports.loggerSLS = {
   disable: [
     'disabledLogger',
   ],
+  transform(log) {
+    console.log(log.content);
+    if (log.content === 'block') return false;
+    return log;
+  },
 };
 
 exports.customLogger = {

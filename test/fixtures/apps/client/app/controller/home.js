@@ -16,6 +16,13 @@ class HomeController extends Controller {
     this.ctx.getLogger('disabledLogger').info('disabled logger');
     this.ctx.body = 'done';
   }
+
+  async transform() {
+    this.ctx.logger.info('pass');
+    this.ctx.logger.info('block');
+    this.ctx.logger.info('pass');
+    this.ctx.body = 'done';
+  }
 }
 
 module.exports = HomeController;
