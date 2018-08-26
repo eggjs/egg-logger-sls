@@ -93,6 +93,7 @@ The data structure uploaded in below, you can create index in aliyun console as 
 - content: the infomation that you logged
 - ip: the host ip
 - hostname: the host name
+- env: the egg environment
 - appName: the package name
 - loggerName: the logger name defined by Egg
 - loggerFileName: the logger file path
