@@ -1,4 +1,19 @@
 
+1.1.0 / 2018-08-26
+==================
+
+**features**
+  * [[`97ebc0c`](http://github.com/eggjs/egg-logger-sls/commit/97ebc0c5fe3d8cdf1cf7e26516e9b9f057439f94)] - feat: support transform (#7) (Haoliang Gao <<sakura9515@gmail.com>>)
+  * [[`c6089fd`](http://github.com/eggjs/egg-logger-sls/commit/c6089fd7e4a4381830288f29daf4d8e42b7c1184)] - feat: add env (#5) (Haoliang Gao <<sakura9515@gmail.com>>)
+  * [[`1256096`](http://github.com/eggjs/egg-logger-sls/commit/125609682871c6def6c4aca5fb6d4ce132e0e1a7)] - feat: logger can be disabled (#4) (Haoliang Gao <<sakura9515@gmail.com>>)
+
+**fixes**
+  * [[`dac0ad4`](http://github.com/eggjs/egg-logger-sls/commit/dac0ad4a83642ae2032e635922c4e83062cf64dc)] - fix: sls transport level is INFO (#6) (Haoliang Gao <<sakura9515@gmail.com>>)
+  * [[`5cf1bac`](http://github.com/eggjs/egg-logger-sls/commit/5cf1bac755fb5e28f6ff2f687188af274c1cd2fc)] - fix: loggerName should be logger key name not class name (#3) (Haoliang Gao <<sakura9515@gmail.com>>)
+
+**others**
+  * [[`517edd0`](http://github.com/eggjs/egg-logger-sls/commit/517edd037d2f7e9107306e4e14461f5672b5ec42)] - chore: remove egg-ci from autod (#2) (Haoliang Gao <<sakura9515@gmail.com>>)
+
 1.0.0 / 2018-08-26
 ==================
 
