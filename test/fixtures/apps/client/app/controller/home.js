@@ -10,6 +10,11 @@ class HomeController extends Controller {
     this.ctx.getLogger('myLogger').info('my logger');
     this.ctx.body = 'done';
   }
+
+  async disable() {
+    this.ctx.getLogger('disabledLogger').info('disabled logger');
+    this.ctx.body = 'done';
+  }
 }
 
 module.exports = HomeController;
