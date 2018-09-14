@@ -191,4 +191,36 @@ describe('test/logger.test.js', () => {
       assert(err.message === 'app.sls.get(\'unknown\') is required');
     }
   });
+
+  describe('level', () => {
+    let app;
+    before(() => {
+      app = mock.app({
+        baseDir: 'apps/level',
+      });
+      return app.ready();
+    });
+    after(() => app.close());
+
+    it('should accept level', async () => {
+      let logs = [];
+      mock(app.sls, 'postLogstoreLogs', async (g, l, group) => {
+        assert(group.source === hostname);
+        logs = group.logs.concat(logs);
+      });
+      await app.httpRequest()
+        .get('/')
+        .expect(200);
+
+      await sleep(2000);
+
+      const levels = [];
+      for (const log of logs) {
+        for (const { key, value } of log.contents) {
+          if (key === 'level') levels.push(value);
+        }
+      }
+      assert.deepEqual(levels, [ 'WARN', 'ERROR' ]);
+    });
+  });
 });
