@@ -1,4 +1,10 @@
 
+1.2.0 / 2018-09-14
+==================
+
+**features**
+  * [[`dea554d`](http://github.com/eggjs/egg-logger-sls/commit/dea554d9aaae53b6d6fa6363d61445be1915899b)] - feat: transform has the second argument (#8) (Haoliang Gao <<sakura9515@gmail.com>>)
+
 1.1.0 / 2018-08-26
 ==================
 
