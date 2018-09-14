@@ -1,4 +1,10 @@
 
+1.2.1 / 2018-09-15
+==================
+
+**fixes**
+  * [[`af5213e`](http://github.com/eggjs/egg-logger-sls/commit/af5213ecd1f33a650fdabc7d302cc39d11639437)] - fix: the level of transport should extend from logger (#9) (Haoliang Gao <<sakura9515@gmail.com>>)
+
 1.2.0 / 2018-09-14
 ==================
 
