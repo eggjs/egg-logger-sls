@@ -113,7 +113,7 @@ You can transform the log data before upload.
 
 ```js
 exports.loggerSLS = {
-  transform(log) {
+  transform(log, args) {
     return log;
   },
 }
@@ -129,6 +129,11 @@ exports.loggerSLS = {
   },
 }
 ```
+
+There is two arguments that transform have.
+
+1. One is log object, it contains the default property, which is `ip`, `hostname`, `env`, `appName`, `loggerName`, `loggerFileName`, `level`. The last one is `content` that is the log string formated from the arguments when you call log method.
+1. The other is original arguments when you call log method, it will not format to content.
 
 ### Data Structure
 
