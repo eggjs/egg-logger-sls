@@ -118,10 +118,11 @@ describe('test/logger.test.js', () => {
       for (const log of logs) {
         for (const { key, value } of log.contents) {
           if (key === 'content' && value === 'pass') values.push(value);
+          if (key === 'content' && value === 'args1') values.push(value);
           assert(value !== 'block');
         }
       }
-      assert.deepEqual(values, [ 'pass', 'pass' ]);
+      assert.deepEqual(values, [ 'pass', 'pass', 'args1' ]);
     });
   });
 
