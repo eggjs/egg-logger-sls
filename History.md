@@ -1,4 +1,10 @@
 
+1.3.0 / 2018-09-18
+==================
+
+**features**
+  * [[`a9b26f7`](http://github.com/eggjs/egg-logger-sls/commit/a9b26f7ded2b1c0eaa8fe7ad662f1373e75b8a65)] - feat: use slsLevel for slsTransport (#10) (Haoliang Gao <<sakura9515@gmail.com>>)
+
 1.2.1 / 2018-09-15
 ==================
 
