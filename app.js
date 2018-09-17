@@ -11,8 +11,7 @@ module.exports = app => {
     if (config.disable.includes(name)) continue;
 
     const transport = new SLSTransport({
-      level: logger.options.level,
-      consoleLevel: 'NONE',
+      level: logger.options.slsLevel || logger.options.level,
       client,
       transform: config.transform,
       env: app.config.env,

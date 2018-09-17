@@ -1,5 +1,7 @@
 'use strict';
 
+const path = require('path');
+
 exports.keys = '123456';
 
 exports.sls = {
@@ -16,5 +18,13 @@ exports.loggerSLS = {
 };
 
 exports.logger = {
-  level: 'WARN',
+  level: 'DEBUG',
+  slsLevel: 'WARN',
+};
+
+exports.customLogger = {
+  oneLogger: {
+    file: path.join(__dirname, '../logs/1.log'),
+    slsLevel: 'ERROR',
+  },
 };

@@ -148,6 +148,30 @@ The data structure uploaded in below, you can create index in aliyun console as 
 - loggerName: the logger name defined by Egg
 - loggerFileName: the logger file path
 
+### Logger Level
+
+The default logger in Egg contains two level: level and consoleLevel, If you want set level for sls, you can use `slsLevel`.
+
+```js
+// config/config.default.js
+module.exports = {
+  logger: {
+    // for all logs
+    slsLevel: 'DEBUG',
+  },
+
+  customLogger: {
+    // only for one log
+    testLogger: {
+      slsLevel: 'ERROR',
+    },
+  },
+};
+```
+
+If `slsLevel` is not specified, it will use level instead.
+
+
 ## Questions & Suggestions
 
 Please open an issue [here](https://github.com/eggjs/egg/issues).
