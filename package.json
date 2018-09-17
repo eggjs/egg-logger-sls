@@ -15,17 +15,17 @@
   ],
   "dependencies": {
     "address": "^1.0.3",
-    "aggregate-base": "^1.1.0",
+    "aggregate-base": "^1.2.0",
     "egg-logger": "^1.7.1"
   },
   "devDependencies": {
     "autod": "^3.0.1",
     "autod-egg": "^1.1.0",
-    "egg": "^2.10.0",
-    "egg-bin": "^4.8.2",
-    "egg-mock": "^3.19.6",
+    "egg": "^2.11.0",
+    "egg-bin": "^4.8.5",
+    "egg-mock": "^3.20.1",
     "egg-sls": "^1.0.0-alpha.1",
-    "eslint": "^5.4.0",
+    "eslint": "^5.6.0",
     "eslint-config-egg": "^7.1.0",
     "mz-modules": "^2.1.0"
   },

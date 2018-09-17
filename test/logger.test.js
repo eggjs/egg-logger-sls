@@ -192,7 +192,7 @@ describe('test/logger.test.js', () => {
     }
   });
 
-  describe('level', () => {
+  describe.only('level', () => {
     let app;
     before(() => {
       app = mock.app({
@@ -203,6 +203,7 @@ describe('test/logger.test.js', () => {
     after(() => app.close());
 
     it('should accept level', async () => {
+      app.mockLog();
       let logs = [];
       mock(app.sls, 'postLogstoreLogs', async (g, l, group) => {
         assert(group.source === hostname);
@@ -214,13 +215,21 @@ describe('test/logger.test.js', () => {
 
       await sleep(2000);
 
+      // assert level
+      app.expectLog('DEBUG');
+      app.expectLog('DEBUG', 'oneLogger');
+
+      // assert slsLevel
       const levels = [];
       for (const log of logs) {
+        let level = '';
         for (const { key, value } of log.contents) {
-          if (key === 'level') levels.push(value);
+          if (key === 'level') level += value;
+          if (key === 'loggerName') level += value;
         }
+        levels.push(level);
       }
-      assert.deepEqual(levels, [ 'WARN', 'ERROR' ]);
+      assert.deepEqual(levels, [ 'ERRORoneLogger', 'WARNlogger', 'ERRORlogger' ]);
     });
   });
 });
