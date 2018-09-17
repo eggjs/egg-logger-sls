@@ -192,7 +192,7 @@ describe('test/logger.test.js', () => {
     }
   });
 
-  describe.only('level', () => {
+  describe('level', () => {
     let app;
     before(() => {
       app = mock.app({
