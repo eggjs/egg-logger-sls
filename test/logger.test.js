@@ -119,7 +119,7 @@ describe('test/logger.test.js', () => {
         for (const { key, value } of log.contents) {
           if (key === 'content' && value === 'pass') values.push(value);
           if (key === 'content' && value === 'args1') values.push(value);
-          if (key === 'meta' && value === 'meta1') values.push(value);
+          if (key === 'content' && value === 'meta1') values.push(value);
           assert(value !== 'block');
         }
       }

@@ -21,7 +21,7 @@ exports.loggerSLS = {
   transform(log, args, meta) {
     if (args[0] === 'args') log.content = 'args1';
     if (log.content === 'block') return false;
-    if (meta) log.meta = 'meta1';  
+    if (meta) log.meta = 'meta1';
     return log;
   },
 };
