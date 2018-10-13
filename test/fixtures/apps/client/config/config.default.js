@@ -18,9 +18,10 @@ exports.loggerSLS = {
   disable: [
     'disabledLogger',
   ],
-  transform(log, args) {
+  transform(log, args, meta) {
     if (args[0] === 'args') log.content = 'args1';
     if (log.content === 'block') return false;
+    if (meta) log.meta = 'meta1';
     return log;
   },
 };
