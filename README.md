@@ -113,7 +113,7 @@ You can transform the log data before upload.
 
 ```js
 exports.loggerSLS = {
-  transform(log, args) {
+  transform(log, args, mate) {
     return log;
   },
 }
