@@ -9,6 +9,9 @@ class HomeController extends Controller {
     this.ctx.logger.warn('warn');
     this.ctx.logger.error('error');
     this.ctx.getLogger('myLogger').info('my logger');
+    const err = new Error('error class');
+    err.code = 'ERROR_CLASS';
+    this.ctx.logger.error(err);
     this.ctx.body = 'done';
   }
 
