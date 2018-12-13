@@ -1,4 +1,10 @@
 
+1.3.1 / 2018-12-13
+==================
+
+**fixes**
+  * [[`a666197`](http://github.com/eggjs/egg-logger-sls/commit/a666197081f394df29de579b60745bf9bcac4517)] - fix: it should uoload the log after formatting (#13) (Haoliang Gao <<sakura9515@gmail.com>>)
+
 1.3.0 / 2018-09-18
 ==================
 
