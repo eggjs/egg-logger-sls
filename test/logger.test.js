@@ -36,6 +36,7 @@ describe('test/logger.test.js', () => {
       let myLoggerInfo;
       let defaultLoggerInfo;
       let errorLoggerInfo;
+      let errorClassLoggerInfo;
 
       for (const log of logs) {
         assert(typeof log.time === 'number');
@@ -46,29 +47,38 @@ describe('test/logger.test.js', () => {
           keys.push(key);
 
           // check custom logger name
-          if (value === 'my logger') {
+          if (/ my logger\n$/.test(value)) {
             myLoggerInfo = log;
           }
-          if (value === 'info') {
+          if (/ info\n$/.test(value)) {
             defaultLoggerInfo = log;
           }
-          if (value === 'error') {
+          if (/ error\n$/.test(value)) {
             errorLoggerInfo = log;
+          }
+          if (/ error class/.test(value)) {
+            console.log(value);
+            errorClassLoggerInfo = log;
+            // it contains context
+            assert(/\[-\/127.0.0.1/.test(value));
           }
 
           // level is info, won't upload debug
           assert(value !== 'debug');
         }
-        assert.deepEqual(keys, [
-          'level',
-          'content',
-          'ip',
-          'hostname',
-          'env',
-          'appName',
-          'loggerName',
-          'loggerFileName',
-        ]);
+
+        if (keys.length === 8) {
+          assert.deepEqual(keys, [
+            'level',
+            'content',
+            'ip',
+            'hostname',
+            'env',
+            'appName',
+            'loggerName',
+            'loggerFileName',
+          ]);
+        }
       }
 
       let result = myLoggerInfo.contents.filter(c => c.key === 'loggerName');
@@ -79,6 +89,9 @@ describe('test/logger.test.js', () => {
 
       result = errorLoggerInfo.contents.filter(c => c.key === 'loggerName');
       assert(result[0].value === 'errorLogger');
+
+      result = errorClassLoggerInfo.contents.filter(c => c.key === 'errorCode');
+      assert(result[0].value === 'ERROR_CLASS');
     });
 
     it('should not upload when disable', async () => {
@@ -117,12 +130,15 @@ describe('test/logger.test.js', () => {
       const values = [];
       for (const log of logs) {
         for (const { key, value } of log.contents) {
-          if (key === 'content' && value === 'pass') values.push(value);
+          if (key === 'content' && /pass\n$/.test(value)) values.push(value);
           if (key === 'content' && value === 'args1') values.push(value);
           assert(value !== 'block');
         }
       }
-      assert.deepEqual(values, [ 'pass', 'pass', 'args1' ]);
+      assert(values.length === 3);
+      assert(/pass\n$/.test(values[0]));
+      assert(/pass\n$/.test(values[1]));
+      assert(values[2] === 'args1');
     });
   });
 
