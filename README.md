@@ -56,6 +56,10 @@ exports.loggerSLS = {
   project: '',
   // sls logstore name
   logstore: '',
+  // sls topic
+  topic: '',
+  // sls source
+  source: '',
   // the list of logger name that can be disabled
   disable: [],
   // the function that can modify and filter the logs
