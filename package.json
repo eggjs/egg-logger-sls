@@ -16,7 +16,7 @@
   "dependencies": {
     "address": "^1.0.3",
     "aggregate-base": "^1.2.0",
-    "egg-logger": "^1.7.1"
+    "egg-logger": "^2.4.1"
   },
   "devDependencies": {
     "autod": "^3.0.1",
