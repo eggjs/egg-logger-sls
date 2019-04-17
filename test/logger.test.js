@@ -279,7 +279,7 @@ describe('test/logger.test.js', () => {
         }
         levels.push(level);
       }
-      assert.deepEqual(levels, [ 'ERRORoneLogger', 'WARNlogger', 'ERRORlogger' ]);
+      assert.deepEqual(levels, [ 'ERRORoneLogger', 'WARNlogger', 'ERRORlogger', 'ERRORerrorLogger', 'ERRORerrorLogger' ]);
     });
   });
 });
