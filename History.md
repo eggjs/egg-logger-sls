@@ -1,4 +1,10 @@
 
+1.4.0 / 2019-04-17
+==================
+
+**features**
+  * [[`3c2d5cc`](http://github.com/eggjs/egg-logger-sls/commit/3c2d5cc6c7162ab3cf5eb55aec86974ed237bd54)] - feat: update egg-logger to v2 && support formatter (#15) (TZ | 天猪 <<atian25@qq.com>>)
+
 1.3.1 / 2018-12-13
 ==================
 
