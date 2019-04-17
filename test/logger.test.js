@@ -142,6 +142,40 @@ describe('test/logger.test.js', () => {
     });
   });
 
+  describe('custom formatter', () => {
+    let app;
+    before(() => {
+      app = mock.app({
+        baseDir: 'apps/client-formatter',
+      });
+      return app.ready();
+    });
+    after(() => app.close());
+
+    it('should upload success', async () => {
+      let logs = [];
+      mock(app.sls, 'postLogstoreLogs', async (g, l, group) => {
+        assert(group.source === hostname);
+        logs = group.logs.concat(logs);
+      });
+      await app.httpRequest()
+        .get('/transform')
+        .expect('done')
+        .expect(200);
+
+      await sleep(2000);
+
+      const values = [];
+      for (const log of logs) {
+        for (const { key, value } of log.contents) {
+          if (key === 'content') values.push(value);
+        }
+      }
+      assert(values[values.length - 1] === 'custom contextFormatter: this is ctx\n');
+      assert(values[values.length - 2] === 'custom formatter: this is app\n');
+    });
+  });
+
   describe('sls clients', () => {
     let app;
     before(() => {
@@ -245,7 +279,7 @@ describe('test/logger.test.js', () => {
         }
         levels.push(level);
       }
-      assert.deepEqual(levels, [ 'ERRORoneLogger', 'WARNlogger', 'ERRORlogger' ]);
+      assert.deepEqual(levels, [ 'ERRORoneLogger', 'WARNlogger', 'ERRORlogger', 'ERRORerrorLogger', 'ERRORerrorLogger' ]);
     });
   });
 });
