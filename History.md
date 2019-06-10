@@ -1,4 +1,10 @@
 
+1.4.1 / 2019-06-10
+==================
+
+**fixes**
+  * [[`7e74948`](http://github.com/eggjs/egg-logger-sls/commit/7e7494825a2dcb4b7f28632f33464cbedb575c3f)] - fix: split logs when PostBodyTooLarge (#16) (killa <<killa123@126.com>>)
+
 1.4.0 / 2019-04-17
 ==================
 
