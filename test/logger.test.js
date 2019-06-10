@@ -4,6 +4,7 @@ const os = require('os');
 const assert = require('assert');
 const mock = require('egg-mock');
 const sleep = require('mz-modules/sleep');
+const LIMIT = 1024 * 1024 * 3;
 
 const hostname = os.hostname();
 
@@ -12,13 +13,69 @@ describe('test/logger.test.js', () => {
 
   describe('sls client', () => {
     let app;
-    before(() => {
+    before(async () => {
       app = mock.app({
         baseDir: 'apps/client',
       });
-      return app.ready();
+      await app.ready();
+      await sleep(1000);
     });
     after(() => app.close());
+
+    it('big log', async () => {
+      let slsUploadCallTime = 0;
+      mock(app.sls, 'postLogstoreLogs', async (g, l, group) => {
+        slsUploadCallTime++;
+        assert(group.source === hostname);
+        const body = group.encode();
+        if (body.length > LIMIT) {
+          const error = new Error('upload failed');
+          error.code = 'PostBodyTooLarge';
+          throw error;
+        }
+      });
+
+      await app.httpRequest()
+        .get('/bigLog')
+        .expect('done')
+        .expect(200);
+
+      await sleep(2000);
+
+      // 1.PostBodyTooLarge
+      // 1.split -> success
+      // 1.split -> success
+      assert(slsUploadCallTime === 3);
+    });
+
+    it('single big log', async () => {
+      let slsUploadCallTime = 0;
+      let error;
+      mock(app.sls, 'postLogstoreLogs', async (g, l, group) => {
+        slsUploadCallTime++;
+        assert(group.source === hostname);
+        const body = group.encode();
+        if (body.length > LIMIT) {
+          const error = new Error('upload failed');
+          error.code = 'PostBodyTooLarge';
+          throw error;
+        }
+      });
+
+      mock(console, 'error', e => {
+        error = e;
+      });
+
+      await app.httpRequest()
+        .get('/singleBigLog')
+        .expect('done')
+        .expect(200);
+
+      await sleep(2000);
+      assert(slsUploadCallTime === 1);
+      assert(/upload sls logs failed PostBodyTooLarge: upload failed/.test(error.message));
+      assert(error.code === 'PostBodyTooLarge');
+    });
 
     it('should upload success', async () => {
       let logs = [];
