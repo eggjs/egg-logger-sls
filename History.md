@@ -1,4 +1,10 @@
 
+1.4.2 / 2019-06-12
+==================
+
+**fixes**
+  * [[`aad5897`](http://github.com/eggjs/egg-logger-sls/commit/aad58975835c787b01ff39e46edfc5afc0b57e0d)] - fix: split logs before upload ensure group size < 3M and log count < 4096 (#17) (killa <<killa123@126.com>>)
+
 1.4.1 / 2019-06-10
 ==================
 
