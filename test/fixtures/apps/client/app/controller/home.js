@@ -19,6 +19,15 @@ class HomeController extends Controller {
   async bigLog() {
     this.ctx.logger.info('warn: ' + crypto.randomBytes(1024 * 1024).toString('hex'));
     this.ctx.logger.info('warn: ' + crypto.randomBytes(1024 * 1024).toString('hex'));
+    this.ctx.logger.info('warn: ' + crypto.randomBytes(1024 * 1024).toString('hex'));
+    this.ctx.logger.info('warn: ' + crypto.randomBytes(1024 * 1024).toString('hex'));
+    this.ctx.body = 'done';
+  }
+
+  async lotLog() {
+    for (let i = 0; i < 18432; i++) {
+      this.ctx.logger.info('info: lot log');
+    }
     this.ctx.body = 'done';
   }
 

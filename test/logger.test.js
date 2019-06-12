@@ -24,15 +24,19 @@ describe('test/logger.test.js', () => {
 
     it('big log', async () => {
       let slsUploadCallTime = 0;
+      let splitCount = 0;
+      let logCount = 0;
       mock(app.sls, 'postLogstoreLogs', async (g, l, group) => {
         slsUploadCallTime++;
         assert(group.source === hostname);
         const body = group.encode();
-        if (body.length > LIMIT) {
-          const error = new Error('upload failed');
-          error.code = 'PostBodyTooLarge';
-          throw error;
-        }
+        assert(body.length < LIMIT);
+        logCount += group.logs.length;
+      });
+      const originSplitLogs = app.slsLoggerClient._createGroups;
+      mock(app.slsLoggerClient, '_createGroups', function(logs, groupLogCount) {
+        splitCount++;
+        return originSplitLogs.apply(app.slsLoggerClient, [ logs, groupLogCount ]);
       });
 
       await app.httpRequest()
@@ -41,28 +45,41 @@ describe('test/logger.test.js', () => {
         .expect(200);
 
       await sleep(2000);
-
-      // 1.PostBodyTooLarge
-      // 1.split -> success
-      // 1.split -> success
-      assert(slsUploadCallTime === 3);
+      assert(slsUploadCallTime === 4);
+      assert(splitCount === 2);
+      assert(logCount === 4);
     });
 
-    it('single big log', async () => {
+    it('lot log', async () => {
       let slsUploadCallTime = 0;
-      let error;
+      let splitCount = 0;
+      let logCount = 0;
       mock(app.sls, 'postLogstoreLogs', async (g, l, group) => {
         slsUploadCallTime++;
         assert(group.source === hostname);
-        const body = group.encode();
-        if (body.length > LIMIT) {
-          const error = new Error('upload failed');
-          error.code = 'PostBodyTooLarge';
-          throw error;
-        }
+        logCount += group.logs.length;
+      });
+      const originSplitLogs = app.slsLoggerClient._createGroups;
+      mock(app.slsLoggerClient, '_createGroups', function(logs, groupLogCount) {
+        splitCount++;
+        return originSplitLogs.apply(app.slsLoggerClient, [ logs, groupLogCount ]);
       });
 
-      mock(console, 'error', e => {
+      await app.httpRequest()
+        .get('/lotLog')
+        .expect('done')
+        .expect(200);
+
+      await sleep(2000);
+      assert(slsUploadCallTime === 5);
+      assert(splitCount === 1);
+      assert(logCount === 18432);
+    });
+
+    it('single big log', async () => {
+      let error;
+
+      app.slsLoggerClient.on('error', e => {
         error = e;
       });
 
@@ -72,12 +89,37 @@ describe('test/logger.test.js', () => {
         .expect(200);
 
       await sleep(2000);
-      assert(slsUploadCallTime === 1);
-      assert(/upload sls logs failed PostBodyTooLarge: upload failed/.test(error.message));
+      assert(/\[sls\/logger] single log size is \d+ exceed limit \d+/.test(error.message));
       assert(error.code === 'PostBodyTooLarge');
     });
 
+    it('should only retry not success logs', async () => {
+      let slsUploadCallTime = 0;
+      mock(app.sls, 'postLogstoreLogs', async (g, l, group) => {
+        slsUploadCallTime++;
+        assert(group.source === hostname);
+        const body = group.encode();
+        assert(body.length < LIMIT);
+        if (slsUploadCallTime === 2) {
+          throw new Error('mock error');
+        }
+      });
+
+      await app.httpRequest()
+        .get('/bigLog')
+        .expect('done')
+        .expect(200);
+
+      await sleep(4000);
+
+      // 1.split -> success
+      // 1.split -> failed
+      // 1.retry
+      assert(slsUploadCallTime === 5);
+    });
+
     it('should upload success', async () => {
+      await sleep(2000);
       let logs = [];
       mock(app.sls, 'postLogstoreLogs', async (g, l, group) => {
         assert(group.source === hostname);
@@ -92,7 +134,7 @@ describe('test/logger.test.js', () => {
 
       let myLoggerInfo;
       let defaultLoggerInfo;
-      let errorLoggerInfo;
+      const errorLoggerInfo = [];
       let errorClassLoggerInfo;
 
       for (const log of logs) {
@@ -111,10 +153,9 @@ describe('test/logger.test.js', () => {
             defaultLoggerInfo = log;
           }
           if (/ error\n$/.test(value)) {
-            errorLoggerInfo = log;
+            errorLoggerInfo.push(log);
           }
           if (/ error class/.test(value)) {
-            console.log(value);
             errorClassLoggerInfo = log;
             // it contains context
             assert(/\[-\/127.0.0.1/.test(value));
@@ -144,8 +185,14 @@ describe('test/logger.test.js', () => {
       result = defaultLoggerInfo.contents.filter(c => c.key === 'loggerName');
       assert(result[0].value === 'logger');
 
-      result = errorLoggerInfo.contents.filter(c => c.key === 'loggerName');
-      assert(result[0].value === 'errorLogger');
+      assert(errorLoggerInfo.length === 2);
+      const contentsList = errorLoggerInfo.map(({ contents }) =>
+        contents.filter(c => c.key === 'loggerName')[0].value
+      ).sort();
+      assert.deepStrictEqual(contentsList, [
+        'errorLogger',
+        'logger',
+      ]);
 
       result = errorClassLoggerInfo.contents.filter(c => c.key === 'errorCode');
       assert(result[0].value === 'ERROR_CLASS');

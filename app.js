@@ -5,7 +5,7 @@ const SLSTransport = require('./lib/sls_transport');
 
 module.exports = app => {
   const config = app.config.loggerSLS;
-  const client = new SLSLoggerClient(app);
+  const client = app.slsLoggerClient = new SLSLoggerClient(app);
 
   for (const [ name, logger ] of app.loggers.entries()) {
     if (config.disable.includes(name)) continue;
